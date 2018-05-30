@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using LETin.BillingoAPI.Models;
 
 namespace LETin.BillingoAPI
 {

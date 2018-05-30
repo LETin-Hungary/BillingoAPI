@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LETin.BillingoAPI
+namespace LETin.BillingoAPI.Models
 {
     public class BillingoResponse<T>
     {
