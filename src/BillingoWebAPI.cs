@@ -80,7 +80,7 @@ namespace LETin.BillingoAPI
             return tokenCache;
         }
 
-        private async Task<HttpResponseMessage> RequestRawAsync(string url)
+        private async Task<HttpResponseMessage> GetRawAsync(string url)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -92,9 +92,66 @@ namespace LETin.BillingoAPI
             }
         }
 
-        protected async Task<ICollection<T>> RequestJsonAsync<T>(string url)
+        public async Task<ICollection<T>> GetJsonAsync<T>(string url)
         {
-            var response = await RequestRawAsync(url);
+            return await DecodeObject<T>(await GetRawAsync(url));
+        }
+
+        private async Task<HttpResponseMessage> PostRawAsync(string url, object model)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", GenerateToken());
+                var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                using (HttpResponseMessage response = await client.PostAsync($"{WebAPIUrl}{url}", stringContent))
+                {
+                    return response;
+                }
+            }
+        }
+
+        public async Task<ICollection<T>> PostJsonAsync<T>(string url, object model)
+        {
+            return await DecodeObject<T>(await PostRawAsync(url, model));
+        }
+
+        private async Task<HttpResponseMessage> PutRawAsync(string url, object model)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", GenerateToken());
+                var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                using (HttpResponseMessage response = await client.PutAsync($"{WebAPIUrl}{url}", stringContent))
+                {
+                    return response;
+                }
+            }
+        }
+
+        public async Task<ICollection<T>> PutJsonAsync<T>(string url, object model)
+        {
+            return await DecodeObject<T>(await PutRawAsync(url, model));
+        }
+
+        private async Task<HttpResponseMessage> DeleteRawAsync(string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", GenerateToken());
+                using (HttpResponseMessage response = await client.DeleteAsync($"{WebAPIUrl}{url}"))
+                {
+                    return response;
+                }
+            }
+        }
+
+        public async Task<ICollection<T>> DeleteJsonAsync<T>(string url)
+        {
+            return await DecodeObject<T>(await DeleteRawAsync(url));
+        }
+
+        private async Task<ICollection<T>> DecodeObject<T>(HttpResponseMessage response)
+        {
             var data = await response.Content.ReadAsByteArrayAsync();
             var text = Encoding.UTF8.GetString(data);
             if (response.StatusCode != HttpStatusCode.OK || response.StatusCode != HttpStatusCode.Created)
