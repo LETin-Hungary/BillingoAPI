@@ -80,7 +80,7 @@ namespace LETin.BillingoAPI
             return tokenCache;
         }
 
-        private async Task<HttpResponseMessage> GetRawAsync(string url)
+        public async Task<HttpResponseMessage> GetRawAsync(string url)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -90,6 +90,11 @@ namespace LETin.BillingoAPI
                     return response;
                 }
             }
+        }
+
+        public async Task GetJsonAsync(string url)
+        {
+            await DecodeObject<object>(await GetRawAsync(url));
         }
 
         public async Task<T> GetJsonAsync<T>(string url)
