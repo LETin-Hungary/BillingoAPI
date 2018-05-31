@@ -8,7 +8,7 @@ namespace LETin.BillingoAPI.Models
         [JsonProperty("type")]
         public string Type { get; set; }
         [JsonProperty("data")]
-        public ICollection<T> Data { get; set; }
+        public T Data { get; set; }
         [JsonProperty("success")]
         public bool Success { get; set; }
     }

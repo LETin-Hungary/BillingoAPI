@@ -92,7 +92,7 @@ namespace LETin.BillingoAPI
             }
         }
 
-        public async Task<ICollection<T>> GetJsonAsync<T>(string url)
+        public async Task<T> GetJsonAsync<T>(string url)
         {
             return await DecodeObject<T>(await GetRawAsync(url));
         }
@@ -110,7 +110,7 @@ namespace LETin.BillingoAPI
             }
         }
 
-        public async Task<ICollection<T>> PostJsonAsync<T>(string url, object model)
+        public async Task<T> PostJsonAsync<T>(string url, object model)
         {
             return await DecodeObject<T>(await PostRawAsync(url, model));
         }
@@ -128,7 +128,7 @@ namespace LETin.BillingoAPI
             }
         }
 
-        public async Task<ICollection<T>> PutJsonAsync<T>(string url, object model)
+        public async Task<T> PutJsonAsync<T>(string url, object model)
         {
             return await DecodeObject<T>(await PutRawAsync(url, model));
         }
@@ -145,12 +145,12 @@ namespace LETin.BillingoAPI
             }
         }
 
-        public async Task<ICollection<T>> DeleteJsonAsync<T>(string url)
+        public async Task<T> DeleteJsonAsync<T>(string url)
         {
             return await DecodeObject<T>(await DeleteRawAsync(url));
         }
 
-        private async Task<ICollection<T>> DecodeObject<T>(HttpResponseMessage response)
+        private async Task<T> DecodeObject<T>(HttpResponseMessage response)
         {
             var data = await response.Content.ReadAsByteArrayAsync();
             var text = Encoding.UTF8.GetString(data);
