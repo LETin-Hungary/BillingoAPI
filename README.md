@@ -20,6 +20,11 @@ Install `LETin.Billingo.AspNetCore` NuGet Package.
 
 Configure BillingoOptions and call `services.AddBillingo();`.
 
+## Testing
+
+1. Copy `src/Api.Test/Configuration/config.example.txt` to `config.txt` with testing credentials.
+1. Run tests.
+
 ## Documentation
 
 The official documentation can be found [here](http://billingo.readthedocs.io/).
